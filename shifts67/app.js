@@ -1,4 +1,3 @@
-
 // =============================================
 // shifts67 — app.js
 // Frontend ↔ API (with demo fallback)
@@ -476,9 +475,31 @@ function showModeBadge() {
 }
 
 // =============================================
+// THEME
+// =============================================
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  const newTheme = isDark ? 'light' : 'dark';
+  html.setAttribute('data-theme', newTheme);
+  document.getElementById('themeToggle').textContent = isDark ? '🌙' : '☀️';
+  localStorage.setItem('shifts67-theme', newTheme);
+}
+
+function loadTheme() {
+  const saved = localStorage.getItem('shifts67-theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('themeToggle').textContent = '☀️';
+  }
+}
+
+// =============================================
 // INIT
 // =============================================
 (async function init() {
+  loadTheme();
+
   const apiOk = await checkApiConnection();
 
   if (!apiOk) {
@@ -496,4 +517,3 @@ function showModeBadge() {
   await loadEmployees();
   await render();
 })();
-  
