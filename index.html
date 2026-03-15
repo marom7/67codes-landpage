@@ -461,10 +461,10 @@
                 <div class="lang-chip" style="--chip-color: #f7df1e;">JavaScript</div>
                 <div class="lang-chip" style="--chip-color: #264de4;">CSS</div>
                 <div class="lang-chip" style="--chip-color: #e34f26;">HTML</div>
-                <div class="lang-chip" style="--chip-color: #9b4f96;">C#</div>
-                <div class="lang-chip" style="--chip-color: #00d8ff;">SQL</div>
-                <div class="lang-chip" style="--chip-color: #41b883;">Vue.js</div>
-                <div class="lang-chip" style="--chip-color: #02569b;">Flutter</div>
+                <div class="lang-chip" style="--chip-color: #9b4f96;">Dart</div>
+                <div class="lang-chip" style="--chip-color: #00d8ff;">C#</div>
+                <div class="lang-chip" style="--chip-color: #41b883;">SQL</div>
+                <div class="lang-chip" style="--chip-color: #02569b;">json</div>
             </div>
 
             <div class="cta-block">
@@ -503,27 +503,7 @@
   <span class="pr">min-height</span>: <span class="val">100vh</span>;
 }`,
 
-// Day 3 — C#
-`<span class="cm">// day 3 — c#</span>
-<span class="kw">app</span>.<span class="fn">MapGet</span>(<span class="str">"/api/ping"</span>,
-  () <span class="op">=></span> <span class="fn">Results</span>.<span class="fn">Ok</span>(
-    <span class="kw">new</span> {
-      <span class="pr">status</span> <span class="op">=</span> <span class="str">"alive"</span>,
-      <span class="pr">server</span> <span class="op">=</span> <span class="str">"SRV67"</span>
-    }
-));`,
-
-// Day 4 — SQL
-`<span class="cm">-- day 4 — sql</span>
-<span class="kw">SELECT</span> <span class="fn">s</span>.<span class="pr">name</span>,
-       <span class="fn">s</span>.<span class="pr">shift_date</span>,
-       <span class="fn">t</span>.<span class="pr">team</span>
-<span class="kw">FROM</span> <span class="fn">shifts</span> <span class="fn">s</span>
-<span class="kw">JOIN</span> <span class="fn">teams</span> <span class="fn">t</span>
-  <span class="kw">ON</span> <span class="fn">s</span>.<span class="pr">team_id</span> <span class="op">=</span> <span class="fn">t</span>.<span class="pr">id</span>
-<span class="kw">WHERE</span> <span class="fn">s</span>.<span class="pr">week</span> <span class="op">=</span> <span class="val">12</span>;`,
-
-// Day 5 — HTML
+// Day 3 — HTML
 `<span class="cm">&lt;!-- day 5 — html --&gt;</span>
 <span class="tag">&lt;section</span> <span class="pr">class</span><span class="op">=</span><span class="str">"dashboard"</span><span class="tag">&gt;</span>
   <span class="tag">&lt;header&gt;</span>
@@ -533,7 +513,40 @@
   <span class="tag">&lt;/div&gt;</span>
 <span class="tag">&lt;/section&gt;</span>`,
 
-// Day 6 — Vue
+// Day 4 — Flutter/Dart
+`<span class="cm">// day 7 — dart</span>
+<span class="kw">class</span> <span class="fn">ShiftCard</span>
+    <span class="kw">extends</span> <span class="fn">StatelessWidget</span> {
+  <span class="kw">final</span> <span class="fn">Shift</span> <span class="pr">shift</span>;
+  <span class="fn">@override</span>
+  <span class="fn">Widget</span> <span class="fn">build</span>(<span class="fn">ctx</span>) {
+    <span class="kw">return</span> <span class="fn">Card</span>(
+      <span class="pr">child</span>: <span class="fn">Text</span>(<span class="pr">shift</span>.<span class="fn">name</span>)
+    );
+  }
+}`,
+
+// Day 5 — C#
+`<span class="cm">// day 3 — c#</span>
+<span class="kw">app</span>.<span class="fn">MapGet</span>(<span class="str">"/api/ping"</span>,
+  () <span class="op">=></span> <span class="fn">Results</span>.<span class="fn">Ok</span>(
+    <span class="kw">new</span> {
+      <span class="pr">status</span> <span class="op">=</span> <span class="str">"alive"</span>,
+      <span class="pr">server</span> <span class="op">=</span> <span class="str">"SRV67"</span>
+    }
+));`,
+
+// Day 6 — SQL
+`<span class="cm">-- day 4 — sql</span>
+<span class="kw">SELECT</span> <span class="fn">s</span>.<span class="pr">name</span>,
+       <span class="fn">s</span>.<span class="pr">shift_date</span>,
+       <span class="fn">t</span>.<span class="pr">team</span>
+<span class="kw">FROM</span> <span class="fn">shifts</span> <span class="fn">s</span>
+<span class="kw">JOIN</span> <span class="fn">teams</span> <span class="fn">t</span>
+  <span class="kw">ON</span> <span class="fn">s</span>.<span class="pr">team_id</span> <span class="op">=</span> <span class="fn">t</span>.<span class="pr">id</span>
+<span class="kw">WHERE</span> <span class="fn">s</span>.<span class="pr">week</span> <span class="op">=</span> <span class="val">12</span>;`,
+
+// Day 7 — json
 `<span class="cm">// day 6 — vue.js</span>
 <span class="kw">export default</span> {
   <span class="fn">setup</span>() {
@@ -546,18 +559,6 @@
   }
 }`,
 
-// Day 7 — Flutter/Dart
-`<span class="cm">// day 7 — dart</span>
-<span class="kw">class</span> <span class="fn">ShiftCard</span>
-    <span class="kw">extends</span> <span class="fn">StatelessWidget</span> {
-  <span class="kw">final</span> <span class="fn">Shift</span> <span class="pr">shift</span>;
-  <span class="fn">@override</span>
-  <span class="fn">Widget</span> <span class="fn">build</span>(<span class="fn">ctx</span>) {
-    <span class="kw">return</span> <span class="fn">Card</span>(
-      <span class="pr">child</span>: <span class="fn">Text</span>(<span class="pr">shift</span>.<span class="fn">name</span>)
-    );
-  }
-}`,
 
 // More JS
 `<span class="cm">// deploy pipeline</span>
