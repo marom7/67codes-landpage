@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>67.codes — 6 days. 7 languages. code.</title>
+    <meta name="description" content="67.codes — The experimental code lab by Marom. 6 days. 7 languages. code.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #05080f;
+            --bg-card: rgba(10, 16, 28, 0.7);
+            --accent: #00ff88;
+            --accent-glow: rgba(0, 255, 136, 0.2);
+            --accent-dim: rgba(0, 255, 136, 0.08);
+            --accent-alt: #ff6b35;
+            --text-primary: #d4e0f0;
+            --text-muted: #5a7090;
+            --text-dim: #253040;
+            --border: rgba(0, 255, 136, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ===== CODE RAIN ===== */
+        .code-rain {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            display: flex;
+        }
+
+        .code-column {
+            flex-shrink: 0;
+            width: var(--col-width);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .code-strip {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            line-height: 1.6;
+            white-space: pre;
+            animation: scrollCode var(--duration) linear infinite;
+            animation-delay: var(--delay);
+        }
+
+        .code-strip .kw { color: rgba(255, 107, 53, 0.4); }
+        .code-strip .fn { color: rgba(0, 255, 136, 0.4); }
+        .code-strip .str { color: rgba(255, 220, 100, 0.3); }
+        .code-strip .cm { color: rgba(50, 70, 90, 0.6); font-style: italic; }
+        .code-strip .op { color: rgba(0, 255, 136, 0.25); }
+        .code-strip .pr { color: rgba(180, 140, 255, 0.3); }
+        .code-strip .tag { color: rgba(255, 90, 90, 0.3); }
+        .code-strip .val { color: rgba(100, 220, 170, 0.35); }
+        .code-strip span { color: rgba(30, 80, 60, 0.4); }
+
+        @keyframes scrollCode {
+            0% { transform: translateY(-50%); }
+            100% { transform: translateY(0%); }
+        }
+
+        /* ===== OVERLAYS ===== */
+        .scanline {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+        }
+
+        .gradient-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 50% 40% at 30% 20%, rgba(0, 255, 136, 0.04) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 50% at 70% 80%, rgba(255, 107, 53, 0.03) 0%, transparent 70%),
+                linear-gradient(180deg, rgba(5, 8, 15, 0.2) 0%, rgba(5, 8, 15, 0.5) 40%, rgba(5, 8, 15, 0.9) 100%);
+        }
+
+        /* ===== CONTENT ===== */
+        .content {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeDown 0.8s ease;
+        }
+
+        .nav-left {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            letter-spacing: 0.1em;
+        }
+
+        .nav-left .blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        .nav-right {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            gap: 3rem;
+        }
+
+        /* ===== SEVEN SEGMENT DISPLAY ===== */
+        .display-container {
+            animation: fadeUp 1s ease 0.2s both;
+        }
+
+        .seven-seg {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 0 40px var(--accent-glow));
+        }
+
+        .seg-digit {
+            width: clamp(50px, 12vw, 90px);
+            height: clamp(80px, 20vw, 150px);
+            position: relative;
+        }
+
+        .seg-digit .seg {
+            position: absolute;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: opacity 0.3s;
+            box-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        /* Horizontal segments */
+        .seg.h {
+            width: 60%;
+            height: 8%;
+            left: 20%;
+        }
+        .seg.a { top: 2%; }
+        .seg.d { bottom: 2%; }
+        .seg.g { top: 46%; }
+
+        /* Vertical segments */
+        .seg.v {
+            width: 12%;
+            height: 40%;
+        }
+        .seg.b { right: 6%; top: 6%; }
+        .seg.c { right: 6%; top: 52%; }
+        .seg.e { left: 6%; top: 52%; }
+        .seg.f { left: 6%; top: 6%; }
+
+        /* Digit 6: a, f, g, e, d, c */
+        .digit-6 .seg.a, .digit-6 .seg.c, .digit-6 .seg.d,
+        .digit-6 .seg.e, .digit-6 .seg.f, .digit-6 .seg.g { opacity: 1; }
+        .digit-6 .seg.b { opacity: 0.06; }
+
+        /* Digit 7: a, b, c */
+        .digit-7 .seg.a, .digit-7 .seg.b, .digit-7 .seg.c { opacity: 1; }
+        .digit-7 .seg.d, .digit-7 .seg.e, .digit-7 .seg.f, .digit-7 .seg.g { opacity: 0.06; }
+
+        .seg-dot {
+            width: clamp(8px, 2vw, 14px);
+            height: clamp(8px, 2vw, 14px);
+            background: var(--accent);
+            border-radius: 50%;
+            align-self: flex-end;
+            margin-bottom: clamp(8px, 2vw, 15px);
+            box-shadow: 0 0 12px var(--accent-glow);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .display-label {
+            margin-top: 0.8rem;
+            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+            letter-spacing: 0.4em;
+            color: var(--accent);
+            opacity: 0.6;
+        }
+
+        /* ===== BRAND STORY ===== */
+        .brand-story {
+            animation: fadeUp 1s ease 0.5s both;
+            max-width: 500px;
+        }
+
+        .story-line {
+            font-size: clamp(1.1rem, 3vw, 1.6rem);
+            font-weight: 300;
+            line-height: 2;
+            color: var(--text-muted);
+        }
+
+        .story-line .num {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 120%;
+        }
+
+        .story-line .highlight {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .story-line .dot {
+            color: var(--accent-alt);
+        }
+
+        .lab-tag {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.35em;
+            color: var(--accent);
+            opacity: 0.5;
+            text-transform: uppercase;
+        }
+
+        /* ===== LANGUAGE TICKER ===== */
+        .lang-ticker {
+            animation: fadeUp 1s ease 0.8s both;
+            display: flex;
+            gap: 2px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 650px;
+        }
+
+        .lang-chip {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lang-chip::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px; height: 100%;
+            background: var(--chip-color);
+        }
+
+        .lang-chip:hover {
+            border-color: var(--chip-color);
+            color: var(--text-primary);
+            background: var(--accent-dim);
+        }
+
+        /* ===== CTA ===== */
+        .cta-block {
+            animation: fadeUp 1s ease 1.1s both;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .cta-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 0.85rem 2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .cta-btn.primary {
+            background: var(--accent);
+            color: var(--bg-deep);
+            font-weight: 700;
+            box-shadow: 0 4px 25px var(--accent-glow);
+        }
+
+        .cta-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px var(--accent-glow);
+        }
+
+        .cta-btn.secondary {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--text-dim);
+        }
+
+        .cta-btn.secondary:hover {
+            border-color: var(--accent-alt);
+            color: var(--accent-alt);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 2rem;
+            text-align: center;
+            animation: fadeUp 1s ease 1.4s both;
+        }
+
+        .footer-line {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            letter-spacing: 0.08em;
+        }
+
+        .footer-line a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-line a:hover {
+            color: var(--accent);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            nav { padding: 1rem 1.2rem; }
+            .hero { padding: 1.5rem; gap: 2.5rem; }
+            .lang-ticker { max-width: 320px; }
+            .cta-block {
+                flex-direction: column;
+                width: 100%;
+                max-width: 260px;
+            }
+            .cta-btn { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="code-rain" id="codeRain"></div>
+    <div class="scanline"></div>
+    <div class="gradient-overlay"></div>
+
+    <div class="content">
+        <nav>
+            <div class="nav-left">guest@67:~$ <span class="blink">_</span></div>
+            <div class="nav-right">experimental lab</div>
+        </nav>
+
+        <main class="hero">
+            <!-- Seven Segment Display: 67 -->
+            <div class="display-container">
+                <div class="seven-seg">
+                    <div class="seg-digit digit-6">
+                        <div class="seg h a"></div>
+                        <div class="seg v b"></div>
+                        <div class="seg v c"></div>
+                        <div class="seg h d"></div>
+                        <div class="seg v e"></div>
+                        <div class="seg v f"></div>
+                        <div class="seg h g"></div>
+                    </div>
+                    <div class="seg-digit digit-7">
+                        <div class="seg h a"></div>
+                        <div class="seg v b"></div>
+                        <div class="seg v c"></div>
+                        <div class="seg h d"></div>
+                        <div class="seg v e"></div>
+                        <div class="seg v f"></div>
+                        <div class="seg h g"></div>
+                    </div>
+                    <div class="seg-dot"></div>
+                </div>
+                <div class="display-label">C O D E S</div>
+            </div>
+
+            <!-- Brand Story -->
+            <div class="brand-story">
+                <div class="story-line">
+                    <span class="num">6</span> <span class="highlight">days</span><span class="dot">.</span>
+                    <span class="num">7</span> <span class="highlight">languages</span><span class="dot">.</span>
+                    <span class="highlight">code</span><span class="dot">.</span>
+                </div>
+                <div class="lab-tag">[ the lab ]</div>
+            </div>
+
+            <!-- Language Chips -->
+            <div class="lang-ticker">
+                <div class="lang-chip" style="--chip-color: #f7df1e;">JavaScript</div>
+                <div class="lang-chip" style="--chip-color: #264de4;">CSS</div>
+                <div class="lang-chip" style="--chip-color: #e34f26;">HTML</div>
+                <div class="lang-chip" style="--chip-color: #9b4f96;">C#</div>
+                <div class="lang-chip" style="--chip-color: #00d8ff;">SQL</div>
+                <div class="lang-chip" style="--chip-color: #41b883;">Vue.js</div>
+                <div class="lang-chip" style="--chip-color: #02569b;">Flutter</div>
+            </div>
+
+            <div class="cta-block">
+                <a href="https://github.com/marom7" class="cta-btn primary">→ GitHub</a>
+                <a href="https://marom.cloud" class="cta-btn secondary">marom.cloud ↗</a>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-line">
+                <a href="https://marom.cloud">marom.cloud</a> · <a href="https://github.com/marom7">github</a> · ashdod, IL · © 2026
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const snippets = [
+// Day 1 — JavaScript
+`<span class="cm">// day 1 — javascript</span>
+<span class="kw">const</span> <span class="fn">lab</span> <span class="op">=</span> {
+  <span class="pr">name</span>: <span class="str">'67.codes'</span>,
+  <span class="pr">purpose</span>: <span class="str">'experiment'</span>,
+  <span class="fn">init</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'ready'</span>);
+  }
+};`,
+
+// Day 2 — CSS
+`<span class="cm">/* day 2 — css */</span>
+<span class="tag">.experiment</span> {
+  <span class="pr">display</span>: <span class="val">grid</span>;
+  <span class="pr">grid-template</span>:
+    <span class="str">"header"</span> <span class="val">auto</span>
+    <span class="str">"main"</span> <span class="val">1fr</span>
+    <span class="str">"footer"</span> <span class="val">auto</span>;
+  <span class="pr">min-height</span>: <span class="val">100vh</span>;
+}`,
+
+// Day 3 — C#
+`<span class="cm">// day 3 — c#</span>
+<span class="kw">app</span>.<span class="fn">MapGet</span>(<span class="str">"/api/ping"</span>,
+  () <span class="op">=></span> <span class="fn">Results</span>.<span class="fn">Ok</span>(
+    <span class="kw">new</span> {
+      <span class="pr">status</span> <span class="op">=</span> <span class="str">"alive"</span>,
+      <span class="pr">server</span> <span class="op">=</span> <span class="str">"SRV67"</span>
+    }
+));`,
+
+// Day 4 — SQL
+`<span class="cm">-- day 4 — sql</span>
+<span class="kw">SELECT</span> <span class="fn">s</span>.<span class="pr">name</span>,
+       <span class="fn">s</span>.<span class="pr">shift_date</span>,
+       <span class="fn">t</span>.<span class="pr">team</span>
+<span class="kw">FROM</span> <span class="fn">shifts</span> <span class="fn">s</span>
+<span class="kw">JOIN</span> <span class="fn">teams</span> <span class="fn">t</span>
+  <span class="kw">ON</span> <span class="fn">s</span>.<span class="pr">team_id</span> <span class="op">=</span> <span class="fn">t</span>.<span class="pr">id</span>
+<span class="kw">WHERE</span> <span class="fn">s</span>.<span class="pr">week</span> <span class="op">=</span> <span class="val">12</span>;`,
+
+// Day 5 — HTML
+`<span class="cm">&lt;!-- day 5 — html --&gt;</span>
+<span class="tag">&lt;section</span> <span class="pr">class</span><span class="op">=</span><span class="str">"dashboard"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;header&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>SRV67 Monitor<span class="tag">&lt;/h1&gt;</span>
+  <span class="tag">&lt;/header&gt;</span>
+  <span class="tag">&lt;div</span> <span class="pr">id</span><span class="op">=</span><span class="str">"ping-grid"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/section&gt;</span>`,
+
+// Day 6 — Vue
+`<span class="cm">// day 6 — vue.js</span>
+<span class="kw">export default</span> {
+  <span class="fn">setup</span>() {
+    <span class="kw">const</span> <span class="fn">hosts</span> <span class="op">=</span> <span class="fn">ref</span>([]);
+    <span class="kw">const</span> <span class="fn">ping</span> <span class="op">=</span> <span class="kw">async</span> (<span class="fn">h</span>) <span class="op">=></span>
+      <span class="kw">await</span> <span class="fn">fetch</span>(
+        <span class="str">\`/api/ping/\${<span class="fn">h</span>}\`</span>
+      );
+    <span class="kw">return</span> { <span class="fn">hosts</span>, <span class="fn">ping</span> };
+  }
+}`,
+
+// Day 7 — Flutter/Dart
+`<span class="cm">// day 7 — dart</span>
+<span class="kw">class</span> <span class="fn">ShiftCard</span>
+    <span class="kw">extends</span> <span class="fn">StatelessWidget</span> {
+  <span class="kw">final</span> <span class="fn">Shift</span> <span class="pr">shift</span>;
+  <span class="fn">@override</span>
+  <span class="fn">Widget</span> <span class="fn">build</span>(<span class="fn">ctx</span>) {
+    <span class="kw">return</span> <span class="fn">Card</span>(
+      <span class="pr">child</span>: <span class="fn">Text</span>(<span class="pr">shift</span>.<span class="fn">name</span>)
+    );
+  }
+}`,
+
+// More JS
+`<span class="cm">// deploy pipeline</span>
+<span class="kw">const</span> <span class="fn">deploy</span> <span class="op">=</span> <span class="kw">async</span> () <span class="op">=></span> {
+  <span class="kw">await</span> <span class="fn">build</span>();
+  <span class="kw">await</span> <span class="fn">test</span>();
+  <span class="kw">await</span> <span class="fn">push</span>(<span class="str">'production'</span>);
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'🚀 live'</span>);
+};`,
+
+// More CSS
+`<span class="cm">/* seven segment */</span>
+<span class="tag">.seg</span> {
+  <span class="pr">position</span>: <span class="val">absolute</span>;
+  <span class="pr">background</span>: <span class="val">#00ff88</span>;
+  <span class="pr">border-radius</span>: <span class="val">2px</span>;
+  <span class="pr">box-shadow</span>:
+    <span class="val">0 0 8px</span>
+    <span class="fn">rgba</span>(<span class="val">0,255,136,0.2</span>);
+  <span class="pr">transition</span>: <span class="val">0.3s</span>;
+}`,
+
+// Config
+`<span class="cm">// lab config</span>
+<span class="kw">export const</span> <span class="fn">config</span> <span class="op">=</span> {
+  <span class="pr">dev</span>: <span class="str">'DEV67'</span>,
+  <span class="pr">srv</span>: <span class="str">'SRV67'</span>,
+  <span class="pr">stack</span>: <span class="str">'JAM'</span>,
+  <span class="pr">db</span>: <span class="str">'MSSQL'</span>,
+  <span class="pr">host</span>: <span class="str">'marom.cloud'</span>,
+};`,
+
+// Fetch
+`<span class="kw">try</span> {
+  <span class="kw">const</span> <span class="fn">data</span> <span class="op">=</span> <span class="kw">await</span> <span class="fn">fetch</span>(
+    <span class="str">'https://67.codes/api'</span>
+  ).<span class="fn">then</span>(<span class="fn">r</span> <span class="op">=></span> <span class="fn">r</span>.<span class="fn">json</span>());
+  <span class="fn">render</span>(<span class="fn">data</span>);
+} <span class="kw">catch</span>(<span class="fn">e</span>) {
+  <span class="fn">fallback</span>();
+}`,
+
+// CSS animation
+`<span class="tag">@keyframes</span> <span class="fn">glow</span> {
+  <span class="val">0%</span> {
+    <span class="pr">text-shadow</span>:
+      <span class="val">0 0 4px</span> <span class="val">#00ff88</span>;
+  }
+  <span class="val">100%</span> {
+    <span class="pr">text-shadow</span>:
+      <span class="val">0 0 20px</span> <span class="val">#00ff88</span>,
+      <span class="val">0 0 40px</span> <span class="val">#00ff88</span>;
+  }
+}`,
+        ];
+
+        const container = document.getElementById('codeRain');
+        const colWidth = 170;
+
+        function createRain() {
+            container.innerHTML = '';
+            container.style.setProperty('--col-width', colWidth + 'px');
+            const numCols = Math.ceil(window.innerWidth / colWidth) + 1;
+
+            for (let i = 0; i < numCols; i++) {
+                const col = document.createElement('div');
+                col.className = 'code-column';
+
+                const strip = document.createElement('div');
+                strip.className = 'code-strip';
+
+                let html = '';
+                const shuffled = [...snippets].sort(() => Math.random() - 0.5);
+                for (let j = 0; j < snippets.length; j++) {
+                    html += shuffled[j % shuffled.length] + '\n\n';
+                }
+                strip.innerHTML = html + html;
+
+                const duration = 45 + Math.random() * 55;
+                const delay = -(Math.random() * 50);
+                strip.style.setProperty('--duration', duration + 's');
+                strip.style.setProperty('--delay', delay + 's');
+
+                col.appendChild(strip);
+                container.appendChild(col);
+            }
+        }
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(createRain, 300);
+        });
+        createRain();
+    </script>
+
+</body>
+</html>
