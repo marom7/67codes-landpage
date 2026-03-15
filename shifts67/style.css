@@ -26,6 +26,57 @@
     --radius: 10px;
     --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
     --shadow-lg: 0 4px 12px rgba(0,0,0,0.08);
+    --thead-bg: #fafbfc;
+    --cell-hover: #f8fafc;
+    --saturday-text: #92400e;
+    --chip-cashier-bg: #fef3c7;
+    --chip-cashier-border: #fde68a;
+    --chip-cashier-text: #92400e;
+    --chip-attendant-bg: #d1fae5;
+    --chip-attendant-border: #a7f3d0;
+    --chip-attendant-text: #065f46;
+    --chip-manager-bg: #ede9fe;
+    --chip-manager-border: #c4b5fd;
+    --chip-manager-text: #5b21b6;
+    --modal-overlay: rgba(0,0,0,0.3);
+  }
+
+  /* ===== DARK THEME ===== */
+  [data-theme="dark"] {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --border: #2a2e3a;
+    --text: #e4e7ed;
+    --text-secondary: #8891a4;
+    --primary: #4f8fff;
+    --primary-light: #1c2740;
+    --morning: #f59e0b;
+    --morning-bg: #2a2210;
+    --morning-border: #5c4a1a;
+    --afternoon: #5b9bff;
+    --afternoon-bg: #1a2235;
+    --afternoon-border: #2a3a5c;
+    --night: #8b8eff;
+    --night-bg: #1e1e35;
+    --night-border: #3a3a6c;
+    --success: #34d399;
+    --danger: #f87171;
+    --saturday: #2a2210;
+    --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.4);
+    --thead-bg: #151820;
+    --cell-hover: #1e2230;
+    --saturday-text: #fbbf24;
+    --chip-cashier-bg: #2a2210;
+    --chip-cashier-border: #5c4a1a;
+    --chip-cashier-text: #fbbf24;
+    --chip-attendant-bg: #0f2620;
+    --chip-attendant-border: #1a4a3a;
+    --chip-attendant-text: #6ee7b7;
+    --chip-manager-bg: #1e1a2e;
+    --chip-manager-border: #3a2e5c;
+    --chip-manager-text: #c4b5fd;
+    --modal-overlay: rgba(0,0,0,0.6);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -225,7 +276,7 @@
     font-size: 0.75rem;
     font-weight: 600;
     text-align: center;
-    background: #fafbfc;
+    background: var(--thead-bg);
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -238,7 +289,7 @@
 
   .schedule-table thead th.saturday-col {
     background: var(--saturday);
-    color: #92400e;
+    color: var(--saturday-text);
   }
 
   .th-date {
@@ -294,7 +345,7 @@
   }
 
   .day-cell:hover {
-    background: #f8fafc;
+    background: var(--cell-hover);
   }
 
   .day-cell.saturday {
@@ -302,7 +353,7 @@
   }
 
   .day-cell.saturday:hover {
-    background: #fef0c7;
+    filter: brightness(0.95);
   }
 
   .day-cell.today {
@@ -354,9 +405,9 @@
     flex-shrink: 0;
   }
 
-  .chip.role-cashier { background: #fef3c7; border-color: #fde68a; color: #92400e; }
-  .chip.role-attendant { background: #d1fae5; border-color: #a7f3d0; color: #065f46; }
-  .chip.role-manager { background: #ede9fe; border-color: #c4b5fd; color: #5b21b6; }
+  .chip.role-cashier { background: var(--chip-cashier-bg); border-color: var(--chip-cashier-border); color: var(--chip-cashier-text); }
+  .chip.role-attendant { background: var(--chip-attendant-bg); border-color: var(--chip-attendant-border); color: var(--chip-attendant-text); }
+  .chip.role-manager { background: var(--chip-manager-bg); border-color: var(--chip-manager-border); color: var(--chip-manager-text); }
 
   /* Add button in cell */
   .cell-add {
@@ -423,7 +474,7 @@
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.3);
+    background: var(--modal-overlay);
     backdrop-filter: blur(4px);
     z-index: 200;
     display: none;
@@ -532,5 +583,30 @@
     .topbar { padding: 12px 16px; }
     .schedule-wrap { padding: 0 12px 12px; }
     .stats-bar { padding: 0 12px 12px; }
-    }
+  }
 
+  /* ===== THEME TOGGLE ===== */
+  body, .topbar, .schedule-table, .stat-card, .modal,
+  .brick, select, .btn, .chip, .day-cell, .shift-type-cell {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
