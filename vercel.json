@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/files/:path*",
-      "destination": "https://app.67.codes/files/:path*"
+      "destination": "https://app.67.codes/:path*"
     }
   ]
 }
