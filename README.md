@@ -1,2 +1,2 @@
 # 67codes-landpage
-67.codes | the lab 🧪
+67.codes | the lab of software 🧪
