@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מדעי ההתנהגות — תוכנית לימודים MBA</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Frank+Ruhl+Libre:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #141720;
+    --surface2: #1c2030;
+    --border: #2a2f42;
+    --accent: #6c8ef5;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --accent4: #fb923c;
+    --accent5: #f472b6;
+    --text: #e2e8f0;
+    --text-muted: #8892a4;
+    --text-dim: #4a5568;
+    --gold: #fbbf24;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0d0f14 0%, #141a2e 50%, #0d0f14 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(108,142,245,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-tag {
+    display: inline-block;
+    background: rgba(108,142,245,0.15);
+    border: 1px solid rgba(108,142,245,0.3);
+    color: var(--accent);
+    font-size: 0.75rem;
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.2rem;
+  }
+  header h1 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #e2e8f0, #6c8ef5, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    margin-bottom: 0.8rem;
+  }
+  header p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 300;
+  }
+  .exam-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.2rem;
+    background: rgba(251,191,36,0.1);
+    border: 1px solid rgba(251,191,36,0.3);
+    color: var(--gold);
+    padding: 0.4rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: 'Heebo', sans-serif;
+    font-size: 0.88rem;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    font-weight: 400;
+  }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+
+  /* MAIN */
+  main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* SECTION */
+  .section { display: none; animation: fadeIn 0.3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* OVERVIEW CARDS */
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .topic-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 60px; height: 60px;
+    border-radius: 0 12px 0 60px;
+    opacity: 0.15;
+  }
+  .topic-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .topic-card .icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+  .topic-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .topic-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+  .topic-card .count {
+    display: inline-block;
+    margin-top: 0.8rem;
+    font-size: 0.72rem;
+    background: rgba(108,142,245,0.15);
+    color: var(--accent);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+  }
+
+  /* CONTENT SECTIONS */
+  .section-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    color: var(--text);
+  }
+  .section-sub {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* THEORY BLOCKS */
+  .theory-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 1.2rem;
+    overflow: hidden;
+  }
+  .theory-header {
+    padding: 1rem 1.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.2s;
+  }
+  .theory-header:hover { background: var(--surface2); }
+  .theory-header h3 { font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 0.6rem; }
+  .theory-header .chevron { transition: transform 0.3s; color: var(--text-muted); font-size: 1.2rem; }
+  .theory-body { display: none; padding: 1.2rem 1.4rem; border-top: 1px solid var(--border); }
+  .theory-body.open { display: block; }
+  .theory-body p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 0.8rem; }
+  .theory-body strong { color: var(--text); }
+
+  /* KEY POINTS */
+  .key-point {
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .key-point:last-child { border-bottom: none; }
+  .key-point .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 0.45rem;
+    flex-shrink: 0;
+  }
+  .key-point p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+  .key-point p strong { color: var(--text); }
+
+  /* TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin: 0.8rem 0;
+  }
+  .data-table th {
+    background: var(--surface2);
+    padding: 0.7rem 1rem;
+    text-align: right;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .data-table td:first-child { color: var(--text); font-weight: 500; }
+
+  /* TAGS */
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin: 0.15rem;
+  }
+  .tag-blue { background: rgba(108,142,245,0.15); color: var(--accent); }
+  .tag-green { background: rgba(52,211,153,0.15); color: var(--accent3); }
+  .tag-orange { background: rgba(251,146,60,0.15); color: var(--accent4); }
+  .tag-pink { background: rgba(244,114,182,0.15); color: var(--accent5); }
+  .tag-purple { background: rgba(167,139,250,0.15); color: var(--accent2); }
+
+  /* QUIZ */
+  .quiz-container { margin-top: 0.5rem; }
+  .quiz-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem;
+    margin-bottom: 1.2rem;
+    transition: border-color 0.2s;
+  }
+  .quiz-card.correct { border-color: var(--accent3); }
+  .quiz-card.wrong { border-color: #ef4444; }
+  .quiz-q {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .quiz-num {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-left: 0.4rem;
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .quiz-opt {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-family: 'Heebo', sans-serif;
+    color: var(--text-muted);
+    text-align: right;
+    transition: all 0.15s;
+    width: 100%;
+  }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--accent); color: var(--text); background: rgba(108,142,245,0.08); }
+  .quiz-opt.selected-correct { background: rgba(52,211,153,0.15); border-color: var(--accent3); color: var(--accent3); }
+  .quiz-opt.selected-wrong { background: rgba(239,68,68,0.12); border-color: #ef4444; color: #f87171; }
+  .quiz-opt.reveal-correct { background: rgba(52,211,153,0.08); border-color: rgba(52,211,153,0.4); color: var(--accent3); }
+  .quiz-opt:disabled { cursor: default; }
+  .quiz-explanation {
+    display: none;
+    margin-top: 0.8rem;
+    padding: 0.8rem 1rem;
+    background: var(--surface2);
+    border-radius: 8px;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    border-right: 3px solid var(--accent3);
+  }
+  .quiz-explanation.show { display: block; }
+  .quiz-score {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .score-num { font-size: 2.5rem; font-weight: 900; color: var(--gold); font-family: 'Frank Ruhl Libre', serif; }
+  .score-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.3rem; }
+  .reset-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    font-weight: 600;
+    transition: opacity 0.2s;
+  }
+  .reset-btn:hover { opacity: 0.85; }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: linear-gradient(135deg, rgba(108,142,245,0.08), rgba(167,139,250,0.08));
+    border: 1px solid rgba(108,142,245,0.25);
+    border-radius: 12px;
+    padding: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+  .summary-box h4 { color: var(--accent); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 700; }
+
+  /* FORMULA */
+  .formula {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    margin: 0.8rem 0;
+    font-size: 0.9rem;
+    color: var(--gold);
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+
+  /* PROGRESS */
+  .progress-bar-wrap { background: var(--surface2); border-radius: 20px; height: 6px; margin: 0.5rem 0 1.5rem; }
+  .progress-bar-fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.4s; }
+
+  /* SCROLL TOP */
+  .scroll-top {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    background: var(--accent);
+    border: none;
+    color: white;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(108,142,245,0.4);
+    z-index: 200;
+  }
+  .scroll-top.visible { display: flex; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+  /* CHAPTER LABEL */
+  .chapter-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  /* HIGHLIGHT */
+  .hl { color: var(--accent); font-weight: 600; }
+  .hl-green { color: var(--accent3); font-weight: 600; }
+  .hl-orange { color: var(--accent4); font-weight: 600; }
+  .hl-pink { color: var(--accent5); font-weight: 600; }
+
+  @media (max-width: 600px) {
+    header { padding: 2rem 1rem 1.5rem; }
+    main { padding: 1.5rem 1rem 3rem; }
+    .nav-btn { padding: 0.9rem 0.8rem; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">📚 MBA · בן-גוריון · מדעי ההתנהגות</div>
+  <h1>תוכנית לימוד מלאה</h1>
+  <p>מדעי ההתנהגות — ד"ר דורית טרייסטר · סיכום + שאלות חזרה + מבחן</p>
+  <div class="exam-badge">🎯 המבחן: 20 שאלות רבות-ברירה · 6 מסיחים לכל שאלה</div>
+</header>
+
+<nav>
+  <button class="nav-btn active" onclick="showSection('overview')">🏠 סקירה</button>
+  <button class="nav-btn" onclick="showSection('stress')">😤 לחץ</button>
+  <button class="nav-btn" onclick="showSection('learning')">🧠 למידה</button>
+  <button class="nav-btn" onclick="showSection('generations')">👥 דורות</button>
+  <button class="nav-btn" onclick="showSection('individual')">🔍 הבדלים אישיים</button>
+  <button class="nav-btn" onclick="showSection('motivation')">🚀 מוטיבציה</button>
+  <button class="nav-btn" onclick="showSection('emotions')">❤️ רגשות</button>
+  <button class="nav-btn" onclick="showSection('justice')">⚖️ צדק</button>
+  <button class="nav-btn" onclick="showSection('quiz')">📝 חזרה</button>
+</nav>
+
+<main>
+
+<!-- ===== OVERVIEW ===== -->
+<div id="section-overview" class="section active">
+  <div class="section-title">ברוך הבא לתוכנית הלימוד 👋</div>
+  <p class="section-sub">כל הנושאים מסודרים לפי שיעורים · לחץ על כל כרטיס כדי לנווט לנושא</p>
+
+  <div class="summary-box">
+    <h4>⚡ מה חשוב לדעת על המבחן</h4>
+    <div class="key-point">
+      <div class="dot" style="background:var(--accent)"></div>
+      <p><strong>פורמט:</strong> 20 שאלות × 6 מסיחים — תמיד יש "כל התשובות נכונות" ו"אף תשובה לא נכונה"</p>
+    </div>
+    <div class="key-point">
+      <div class="dot" style="background:var(--accent3)"></div>
+      <p><strong>סגנון:</strong> שאלות מבוססות דוגמאות מחיי יום-יום — צריך לזהות את המושג מתוך הסיטואציה</p>
+    </div>
+    <div class="key-point">
+      <div class="dot" style="background:var(--gold)"></div>
+      <p><strong>דגש:</strong> מאמרים ספציפיים — הולמס-רהה, גרינברג 1990, רפאלי וסטון 1987, שור רודנסקי וערב 2014, לוונשטיין וקריידר</p>
+    </div>
+  </div>
+
+  <div class="topic-grid">
+    <div class="topic-card" onclick="showSection('stress')" style="border-right: 3px solid var(--accent);">
+      <div class="icon">😤</div>
+      <h3>לחץ בארגונים</h3>
+      <p>Distress vs Eustress, מודל Demand-Control, הולמס-רהה, לאזארוס</p>
+      <span class="count">4 מודלים</span>
+    </div>
+    <div class="topic-card" onclick="showSection('learning')" style="border-right: 3px solid var(--accent2);">
+      <div class="icon">🧠</div>
+      <h3>למידה בארגונים</h3>
+      <p>התניה קלאסית, התניה אופרנטית, למידה חברתית, אכיפה ידידותית</p>
+      <span class="count">3 גישות</span>
+    </div>
+    <div class="topic-card" onclick="showSection('generations')" style="border-right: 3px solid var(--accent3);">
+      <div class="icon">👥</div>
+      <h3>ניהול בין-דורי</h3>
+      <p>BB, X, Y, Z — מאפיינים, קונפליקטים, כלים לניהול</p>
+      <span class="count">4 דורות</span>
+    </div>
+    <div class="topic-card" onclick="showSection('individual')" style="border-right: 3px solid var(--accent4);">
+      <div class="icon">🔍</div>
+      <h3>הבדלים בין-אישיים</h3>
+      <p>Factor G, Big Five, MBTI, גישת האינטראקציה</p>
+      <span class="count">מבחנים + מודלים</span>
+    </div>
+    <div class="topic-card" onclick="showSection('motivation')" style="border-right: 3px solid var(--accent5);">
+      <div class="icon">🚀</div>
+      <h3>מוטיבציה</h3>
+      <p>תיאוריית הציפייה, הצבת יעדים SMART, הוגנות, ויסות מיקוד</p>
+      <span class="count">4 תיאוריות</span>
+    </div>
+    <div class="topic-card" onclick="showSection('emotions')" style="border-right: 3px solid var(--gold);">
+      <div class="icon">❤️</div>
+      <h3>רגשות ואינטליגנציה רגשית</h3>
+      <p>עבודת רגשות, EI, הדבקה רגשית, דחיית סיפוקים</p>
+      <span class="count">6 מושגים</span>
+    </div>
+    <div class="topic-card" onclick="showSection('justice')" style="border-right: 3px solid var(--accent3);">
+      <div class="icon">⚖️</div>
+      <h3>צדק והוגנות</h3>
+      <p>צדק חלוקתי, צדק פרוצדורלי, מאמר גרינברג 1990</p>
+      <span class="count">2 סוגי צדק</span>
+    </div>
+    <div class="topic-card" onclick="showSection('quiz')" style="border-right: 3px solid #ef4444;">
+      <div class="icon">📝</div>
+      <h3>שאלות חזרה</h3>
+      <p>40 שאלות מתוך חומר הקורס עם תשובות והסברים</p>
+      <span class="count">40 שאלות</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STRESS ===== -->
+<div id="section-stress" class="section">
+  <div class="section-title">😤 לחץ בארגונים</div>
+  <p class="section-sub">Stress Management in Organizations · הרצאה ראשונה</p>
+
+  <div class="summary-box">
+    <h4>🎯 הגדרה בסיסית</h4>
+    <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.7;">לחץ = <strong style="color:var(--text)">תגובה פסיכולוגית ופיזיולוגית</strong> לדרישות סביבה שעולות על יכולת ההתמודדות של האדם.</p>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-blue">הבחנה בסיסית</span> Distress vs Eustress</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <table class="data-table">
+        <tr><th>סוג</th><th>הגדרה</th><th>דוגמה</th></tr>
+        <tr><td>😰 Distress</td><td>לחץ שלילי — הדרישות עולות על יכולת ההתמודדות</td><td>בוס דורש הרבה ואין שליטה</td></tr>
+        <tr><td>😊 Eustress</td><td>לחץ חיובי — אתגר שמעורר מוטיבציה ואנרגיה</td><td>מציאת הרבה כסף, סיום קורס בהצלחה</td></tr>
+      </table>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent4)"></div>
+        <p>⚠️ <strong>שאלת מבחן קלאסית:</strong> "לחץ בעקבות דרישות מהבוס ללא שליטה" = <strong>Distress</strong>. לחץ מ"מציאת כסף" = <strong>Eustress</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-purple">מודל</span> Demand-Control (ביקוש-בקרה)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>המודל בנוי על שני ממדים: <strong>ביקוש</strong> (עומס, לחץ זמן) ו<strong>בקרה</strong> (אוטונומיה, יכולת לקבל החלטות).</p>
+      <table class="data-table">
+        <tr><th>ביקוש</th><th>בקרה</th><th>תוצאה</th></tr>
+        <tr><td>גבוה</td><td>נמוך</td><td>🔴 High Strain — לחץ מקסימלי, שחיקה</td></tr>
+        <tr><td>גבוה</td><td>גבוה</td><td>🟢 Active/Eustress — למידה וצמיחה</td></tr>
+        <tr><td>נמוך</td><td>גבוה</td><td>🟡 Low Strain — רגוע</td></tr>
+        <tr><td>נמוך</td><td>נמוך</td><td>⚪ Passive — שעמום, חוסר מוטיבציה</td></tr>
+      </table>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent3)"></div>
+        <p>💡 <strong>דני הרופא:</strong> ביקוש גבוה + שליטה גבוהה = <strong>Active/Eustress</strong> — לא distress!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-orange">מדד</span> הולמס-רהה (Holmes-Rahe 1967)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>כלי שמודד <strong>לחץ מצטבר</strong> מאירועי חיים (נישואים, לידה, פיטורים...). לכל אירוע ניקוד — סכום גבוה = סיכון בריאותי.</p>
+      <div class="divider"></div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent3)"></div>
+        <p><strong class="hl-green">יתרון:</strong> מאפשר לנבא אילו גורמים יגרמו ללחץ בהסתברות גבוהה</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent5)"></div>
+        <p><strong class="hl-pink">חיסרון:</strong> לא מתייחס להבדלים בין אנשים, קבוצות או ארגונים</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent4)"></div>
+        <p>⚠️ זו שאלה מהמבחן! <strong>תשובה 1</strong> היא הנכונה: יתרון = ניבוי גבוה, חיסרון = לא מתייחס להבדלים</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-green">מודל</span> לאזארוס — המודל ההערכתי-קוגניטיבי</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>לחץ נוצר <strong>לא מהאירוע עצמו</strong> אלא מהאופן שבו האדם מפרש אותו.</p>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent)"></div>
+        <p><strong>הערכה ראשונית:</strong> האם האירוע הוא איום, נזק, או אתגר?</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent2)"></div>
+        <p><strong>הערכה שניונית:</strong> האם יש לי מספיק משאבים להתמודד?</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent3)"></div>
+        <p>💡 <strong>אורית:</strong> "מתרגשת מהאתגר" = הערכה ראשונית גבוהה (=אתגר, לא איום). שואלת ותיקים = הערכה שניונית גבוהה (משאבים). → <strong>לא distress!</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-blue">מודל</span> GAS — תסמונת הסתגלות כללית (Fight or Flight)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent4)"></div>
+        <p><strong>1. התראה (Alarm):</strong> הגוף מזהה איום → עוררות פיזיולוגית</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent)"></div>
+        <p><strong>2. התנגדות (Resistance):</strong> מתמודדים עם הלחץ, שומרים על תפקוד</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent5)"></div>
+        <p><strong>3. תשישות (Exhaustion):</strong> משאבים מתדלדלים → ירידה בתפקוד ובבריאות</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LEARNING ===== -->
+<div id="section-learning" class="section">
+  <div class="section-title">🧠 למידה בארגונים</div>
+  <p class="section-sub">Organizational Learning — גישות התנהגותית וחברתית</p>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-blue">גישה 1</span> התניה קלאסית</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>למידת <strong>קשר בין שני גירויים</strong>. הגירוי המותנה (CS) מעורר תגובה מותנה (CR) שנלמדה.</p>
+      <table class="data-table">
+        <tr><th>תופעה</th><th>הסבר</th><th>דוגמה</th></tr>
+        <tr><td>הכללה</td><td>תגובה מתרחבת לגירויים דומים</td><td>בכל אזעקה רצים למרחב מוגן</td></tr>
+        <tr><td>הבחנה</td><td>תגובה לגירוי ספציפי בלבד</td><td>רק אזעקת צבע אדום = ריצה</td></tr>
+        <tr><td>הכחדה</td><td>ניטרול ההתניה</td><td>עזב ישראל, שכח לרוץ</td></tr>
+        <tr><td>התאוששות ספונטנית</td><td>החזרת ההתניה המקורית</td><td>חזר לישראל, שמע אזעקה → רץ שוב</td></tr>
+      </table>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>שאלה מהמבחן:</strong> שרית שומעת שיר גלידה ומרגישה טעם גלידה → <strong>התאוששות ספונטנית של תגובה מותנית</strong></p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent)"></div>
+        <p>⚠️ <strong>שאלה מהמבחן:</strong> סיימון לא קם לאכול כשהבן מצלצל בפעמון בבית → <strong>הבחנה</strong> (פעמון בית ≠ פעמון עבודה)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-purple">גישה 2</span> התניה אופרנטית — חיזוק וענישה</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>למידת קשר בין <strong>התנהגות לתוצאה</strong>.</p>
+      <table class="data-table">
+        <tr><th>כלי</th><th>מנגנון</th><th>מטרה</th><th>דוגמה</th></tr>
+        <tr><td>חיזוק חיובי ✅</td><td>הוספת גירוי טוב</td><td>הגברת התנהגות</td><td>בונוס על ביצוע</td></tr>
+        <tr><td>חיזוק שלילי ✅</td><td>הסרת גירוי רע</td><td>הגברת התנהגות</td><td>הפסקת ביקורת כשמגיע בזמן</td></tr>
+        <tr><td>עונש חיובי ❌</td><td>הוספת גירוי רע</td><td>הפחתת התנהגות</td><td>ניקוי כיתה / קנס</td></tr>
+        <tr><td>עונש שלילי ❌</td><td>הסרת גירוי טוב</td><td>הפחתת התנהגות</td><td>אי כניסה לבית חולים</td></tr>
+      </table>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent3)"></div>
+        <p>💡 <strong>חיזוק עדיף מעונש</strong> כי: לעונש יש ערך אינפורמטיבי נמוך (מלמד רק מה לא לעשות) + תופעות לוואי שליליות</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>שאלה:</strong> יוסי ניקה כיתה = <strong>עונש חיובי</strong> (הוספת משימה). שקד לא נכנס לבית חולים = <strong>עונש שלילי</strong> (הסרת טיפול).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-green">מחקר</span> אכיפה ידידותית — שור, רודנסקי וערב (2014)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>במפעל: עונש של 5,000₪ על אי-שימוש בציוד מגן = לא עבד (קשה לאכוף). הפתרון:</p>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent3)"></div>
+        <p><strong>עונש קל + עקבי</strong> (קל לאכיפה) + <strong>חיזוק חיובי</strong> (פרס על שימוש) → 90-100% שימוש!</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent)"></div>
+        <p>המסקנה: עונש חמור + נדיר = לא יעיל. <strong>עונש קל + תדיר + חיזוק = יעיל!</strong></p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ מובילאיי: צפצוף על סטייה = עונש קל + עקבי (מצפצף ב<strong>רוב המוחלט</strong> של המקרים)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-orange">גישה 3</span> למידה חברתית — בנדורה</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>"רוב הלמידה נעשית <strong>לא ע"י ניסיון אישי</strong>, אלא ע"י <strong>צפייה באחרים</strong>"</p>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent5)"></div>
+        <p>ילדים שצפו בסרט אלים → התנהגו אלים (ברמות שונות בהתאם לתגמול/עונש שראו)</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>שאלה:</strong> עובדים מחקים גניבות של מנהלים = <strong>למידה חברתית</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GENERATIONS ===== -->
+<div id="section-generations" class="section">
+  <div class="section-title">👥 ניהול בין-דורי</div>
+  <p class="section-sub">Generational Management — 4 דורות בשוק העבודה</p>
+
+  <table class="data-table" style="margin-bottom:1.5rem;">
+    <tr><th>דור</th><th>שנות לידה</th><th>מאפיין מרכזי</th><th>גישה לעבודה</th></tr>
+    <tr><td>Baby Boomers (BB)</td><td>1946–1964</td><td>נאמנות, היררכיה, עבודה קשה</td><td>שעות 8-8, מוסר עבודה גבוה</td></tr>
+    <tr><td>דור X</td><td>1964–1980</td><td>ציניים, פרקטיים, איזון בית-עבודה</td><td>9 to 5, כסף > סיפוק</td></tr>
+    <tr><td>דור Y (מילניאלס)</td><td>1980–1997</td><td>יזמים, מולטיטסקינג, אתגרים</td><td>35% מהשוק, רוצים השפעה</td></tr>
+    <tr><td>דור Z</td><td>1997–2002</td><td>למידה מהירה, רשתות חברתיות</td><td>עבודה = תחנה בדרך, פידבק</td></tr>
+  </table>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-blue">זיהוי</span> שאלות זיהוי דור מהמבחן</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>צחי עובד 8-8 + מוסר עבודה + משמעת + מחויבות</strong> → <strong class="hl">Baby Boomers</strong></p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent)"></div>
+        <p>⚠️ <strong>מירי: שעות קבועות + קידום + קביעות + איזון בית</strong> → <strong class="hl">דור X</strong></p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent3)"></div>
+        <p>⚠️ <strong>יתרון מרכזי דור Z:</strong> <strong class="hl-green">יכולת למידה מהירה מאוד</strong> (לא "ממושמע", לא "מאזן בית-עבודה")</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-green">כלים</span> ניהול צוות בין-דורי</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent)"></div>
+        <p><strong>איזון והדדיות:</strong> לא להעצים דור אחד, תגמול מותאם לכל דור</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent2)"></div>
+        <p><strong>חיזוק ערכים:</strong> תרבות ארגונית מעבר לדורות — כבוד, אנושיות, גיבוש</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent3)"></div>
+        <p><strong>טיפוח הביחד:</strong> צוותים המשלבים דורות שונים</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== INDIVIDUAL DIFFERENCES ===== -->
+<div id="section-individual" class="section">
+  <div class="section-title">🔍 הבדלים בין-אישיים</div>
+  <p class="section-sub">Individual Differences — אישיות, אינטליגנציה, מיון</p>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-blue">מרכיב</span> Factor G — אינטליגנציה כללית</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>גורם האינטליגנציה הכללית (ספירמן) — יכולת קוגניטיבית רחבה הניבוי הצלחה בעבודות רבות.</p>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent3)"></div>
+        <p><strong>מחקר DOL:</strong> 32,000+ מקצועות → Factor G משפר <strong>ניבוי הצלחה במגוון מקצועות</strong></p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent5)"></div>
+        <p><strong>חיסרון:</strong> מתעלם מכישורים לא-קוגניטיביים ומהשפעות תרבותיות ורגשיות</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-orange">מודל</span> אינטליגנציה נזילה vs מגובשת</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <table class="data-table">
+        <tr><th>סוג</th><th>הגדרה</th><th>שיא גיל</th></tr>
+        <tr><td>נזילה (Fluid)</td><td>יכולת פתרון בעיות חדשות, מהירות חשיבה</td><td>20-30</td></tr>
+        <tr><td>מגובשת (Crystallized)</td><td>ידע, ניסיון, חוכמה נצברת</td><td>ממשיכה לגדול עד גיל מבוגר</td></tr>
+      </table>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>ניהול בכיר בבית חולים</strong> = צריך ניסיון + חוכמה → <strong class="hl">גיל 40-50</strong> (מגובשת בשיאה)</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent)"></div>
+        <p>⚠️ <strong>סטארט-אפ</strong> = צריך מהירות + חשיבה יצירתית → <strong class="hl">גיל 20-30</strong> (נזילה בשיאה)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-purple">מודל</span> Big Five — חמשת הגדולים</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <table class="data-table">
+        <tr><th>תכונה</th><th>גבוה</th><th>נמוך</th></tr>
+        <tr><td>פתיחות (O)</td><td>יצירתי, סקרן</td><td>שמרן, שגרה</td></tr>
+        <tr><td>מצפוניות (C)</td><td>אחריות, סדר, התמדה</td><td>דחיינות, אימפולסיביות</td></tr>
+        <tr><td>מוחצנות (E)</td><td>חברותי, אנרגטי</td><td>מופנם, שקט</td></tr>
+        <tr><td>נועם (A)</td><td>אמפתיה, שיתוף פעולה</td><td>תחרותי, ביקורתי</td></tr>
+        <tr><td>נוירוטיות (N)</td><td>חרדה, חוסר יציבות</td><td>רוגע, חוסן</td></tr>
+      </table>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>צוות הייטק:</strong> כולם מצפוניות גבוהה (תנאי בסיס לעבודה איכותית) + מגוון נועם ומוחצנות</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MOTIVATION ===== -->
+<div id="section-motivation" class="section">
+  <div class="section-title">🚀 מוטיבציה</div>
+  <p class="section-sub">Motivation Theories — 4 תיאוריות מרכזיות</p>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-blue">תיאוריה 1</span> תיאוריית הציפייה (Expectancy Theory)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <div class="formula">מוטיבציה = ציפייה (Expectancy) × תועלת (Instrumentality) × ערך (Valence)</div>
+      <table class="data-table">
+        <tr><th>מרכיב</th><th>שאלה</th></tr>
+        <tr><td>ציפייה</td><td>אם אשקיע — אצליח?</td></tr>
+        <tr><td>תועלת</td><td>אם אצליח — אקבל תגמול?</td></tr>
+        <tr><td>ערך</td><td>האם התגמול שווה לי?</td></tr>
+      </table>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>אביתר/אגם בוחבוט:</strong> מה חסר? <strong class="hl">לוודא שציון 90+ הוא בר-ביצוע</strong> (=ציפייה). לא מאתגר מספיק ≠ בעיית ציפייה!</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent)"></div>
+        <p>⚠️ <strong>וויסקי למתווכים:</strong> חלק יתאמצו יותר, חלק לא — כי <strong class="hl">ערך</strong> הוויסקי שונה לכל אחד</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-green">תיאוריה 2</span> הצבת יעדים — Goal Setting Theory</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>יעד טוב = <strong class="hl">SMART</strong>: Specific, Measurable, Achievable, Relevant, Time-bound</p>
+      <p style="margin-top:0.8rem;">בנוסף — יעד צריך להיות <strong>קשה אך אפשרי</strong>.</p>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>לנה + חדר מבולגן:</strong> "שימי בגדים + קלסרים, חצי שעה, אחזור לבדוק" = <strong class="hl">תשובה ד'</strong> (ספציפי + לו"ז + מעקב)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-purple">תיאוריה 3</span> ויסות מיקוד — Regulatory Focus Theory</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <table class="data-table">
+        <tr><th>מיקוד קידום (Promotion)</th><th>מיקוד מניעה (Prevention)</th></tr>
+        <tr><td>שאיפות, תקוות</td><td>מחויבות, אחריות</td></tr>
+        <tr><td>מהיר, נלהב</td><td>זהיר, שקול</td></tr>
+        <tr><td>שמחה ↔ ייאוש</td><td>רוגע ↔ מתח</td></tr>
+      </table>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>דנה — "תעופו עם הדמיון, לנצח בגדול, סיכונים"</strong> = <strong class="hl">מיקוד קידום</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-orange">תיאוריה 4</span> הוגנות — Equity Theory (אדמס)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>עובדים משווים: <strong>תשומות/תפוקות שלי</strong> לעומת <strong>תשומות/תפוקות של האחר</strong>.</p>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent5)"></div>
+        <p><strong>משקיע פחות, מקבל כמו כולם</strong> → תחושת <strong>יתר</strong> → <strong class="hl">יגדיל מאמץ</strong> (כמו שרה)</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent4)"></div>
+        <p><strong>משקיע יותר, מקבל כמו כולם</strong> → תחושת <strong>חסר</strong> → <strong class="hl">יפחית מאמץ / ידרוש העלאה / ישנה תפיסה</strong></p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>יואב:</strong> מה <strong>לא</strong> יעשה? — <strong class="hl">ישקיע עוד יותר</strong> (זה הפוך מהציפייה!). הוא כבר מוציא יותר ממה שמקבל — לא יגדיל עוד.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-pink">מאמר</span> לוונשטיין וקריידר — תשלום על חיסון</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent5)"></div>
+        <p><strong>המסקנה המרכזית:</strong> תשלום עלול לשנות מוטיבציה <strong class="hl-pink">פנימית → חיצונית</strong>. אנשים יחשבו "אם משלמים לי, אולי זה מסוכן" → פוגע בנכונות להתחסן!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EMOTIONS ===== -->
+<div id="section-emotions" class="section">
+  <div class="section-title">❤️ רגשות ואינטליגנציה רגשית</div>
+  <p class="section-sub">Emotions & Emotional Intelligence</p>
+
+  <div class="summary-box">
+    <h4>6 רגשות בסיסיים (אוניברסליים)</h4>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem;">
+      <span class="tag tag-orange">😲 הפתעה</span>
+      <span class="tag tag-pink">😠 כעס</span>
+      <span class="tag tag-blue">😨 פחד</span>
+      <span class="tag tag-purple">🤢 גועל</span>
+      <span class="tag tag-green">😊 שמחה</span>
+      <span class="tag tag-blue">😢 עצב</span>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-blue">הבחנה</span> רגש (Emotion) vs מצב רוח (Mood)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <table class="data-table">
+        <tr><th></th><th>רגש (Emotion)</th><th>מצב רוח (Mood)</th></tr>
+        <tr><td>משך</td><td>קצר — רגע ספציפי</td><td>ארוך — שעות/ימים</td></tr>
+        <tr><td>מקור</td><td>אירוע מזוהה</td><td>לא תמיד ברור</td></tr>
+        <tr><td>עוצמה</td><td>חזקה יותר</td><td>חלשה יותר</td></tr>
+      </table>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>יורם עם עליזות ושלווה למספר ימים</strong> = <strong class="hl">מצב רוח</strong> כי הוא <strong>מתמשך מטבעו</strong> (לא תוצאה של אירוע בודד)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-purple">מושג</span> עבודת רגשות (Emotional Labor)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <table class="data-table">
+        <tr><th>סוג</th><th>הגדרה</th><th>דוגמה</th></tr>
+        <tr><td>משחק שטחי (Surface Acting)</td><td>הבעה חיצונית של רגש ≠ רגש פנימי</td><td>מלצרית מחייכת למרות עצב</td></tr>
+        <tr><td>משחק עמוק (Deep Acting)</td><td>שינוי ממשי של הרגש הנחווה</td><td>גננת שמרגישה אהבה אמיתית</td></tr>
+      </table>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>גננת שמרגישה שמחה כאילו ילדים הם שלה</strong> = <strong class="hl">Deep Acting</strong> (שינוי ממשי של הרגש)</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent)"></div>
+        <p>⚠️ <strong>יצחק המלצר שמחייך גם בלי מצב רוח</strong> = <strong class="hl">עבודת רגשות</strong> (השאלה לא מציינת שינוי פנימי → Surface Acting)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-green">מחקר</span> רפאלי וסטון (1987) — רגש ומכירות</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>חקרו חנויות נוחות — ציפו למתאם חיובי בין חיוך למכירות. התוצאה הייתה מפתיעה:</p>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent3)"></div>
+        <p><strong>חנות ריקה:</strong> חיוך → לקוחות נשארים יותר → יותר קניות ✅</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent5)"></div>
+        <p><strong>חנות עמוסה:</strong> חיוך → קצב איטי → לקוחות כועסים → מכירות יורדות ❌</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ המלצה: <strong class="hl">לחייך דווקא כשאין עומס</strong> (תשובה ג')</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-orange">מושג</span> אינטליגנציה רגשית (EI)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent)"></div>
+        <p><strong>כלפי עצמי:</strong> זיהוי, הבנה, ויסות ושליטה ברגשות שלי</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent2)"></div>
+        <p><strong>כלפי האחר:</strong> זיהוי רגשות האחר, אמפתיה, ניהול רגשות האחר</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent3)"></div>
+        <p>EI גבוה (לא IQ!) מנבא <strong>התקדמות לדרגות גבוהות</strong> בארגון</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>אליפלט — מגדיר רגשות + מזהה אחרים + מבין הבעות</strong> = <strong class="hl">אינטליגנציה רגשית גבוהה</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-pink">מושג</span> הדבקה רגשית (Emotional Contagion)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>העברת רגשות בין אנשים ללא כוונה מפורשת (חיקוי פנים, רמזים לא-מילוליים).</p>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ <strong>רווית מדברת עם אחיה עצבני → נעשית עצבנית</strong> = <strong class="hl">הדבקה רגשית</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== JUSTICE ===== -->
+<div id="section-justice" class="section">
+  <div class="section-title">⚖️ צדק והוגנות בארגונים</div>
+  <p class="section-sub">Organizational Justice — חלוקתי ופרוצדורלי</p>
+
+  <table class="data-table" style="margin-bottom:1.5rem;">
+    <tr><th>סוג צדק</th><th>הגדרה</th><th>פנים</th></tr>
+    <tr><td>חלוקתי (Distributive)</td><td>הוגנות של התוצאה עצמה — מה קיבלתי?</td><td>שוויוניות, הלימה, צורך</td></tr>
+    <tr><td>פרוצדורלי (Procedural)</td><td>הוגנות של התהליך — איך הוחלט?</td><td>Voice, Appeal, Interactional, Informational</td></tr>
+  </table>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-orange">מאמר</span> גרינברג 1990 — Employee Theft</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>כשהפחיתו שכר לעובדים — עלתה גניבה. אבל...</p>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent3)"></div>
+        <p><strong>כשהסבירו בצורה מכבדת ושקופה את סיבת הקיצוץ</strong> (=צדק פרוצדורלי), הגניבה ירדה משמעותית!</p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--gold)"></div>
+        <p>⚠️ המסקנה: <strong class="hl">צדק פרוצדורלי יכול לפצות על חוסר בצדק חלוקתי</strong> (תשובה ב')</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <h3><span class="tag tag-blue">מושג</span> חוסר הוגנות — תגובות צפויות</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent5)"></div>
+        <p>תשלום <strong>חסר</strong> → <strong class="hl-pink">כעס</strong></p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent3)"></div>
+        <p>תשלום <strong>יתר</strong> → <strong class="hl-green">אשמה</strong></p>
+      </div>
+      <div class="key-point">
+        <div class="dot" style="background:var(--accent)"></div>
+        <p>הטיה עצמית: "מה שטוב לי = הוגן"</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== QUIZ ===== -->
+<div id="section-quiz" class="section">
+  <div class="section-title">📝 שאלות חזרה</div>
+  <p class="section-sub">40 שאלות מתוך חומר הקורס — לחץ על תשובה כדי לבדוק את עצמך</p>
+
+  <div class="quiz-score">
+    <div class="score-num" id="score-display">0/0</div>
+    <div class="score-label">תשובות נכונות</div>
+    <div class="progress-bar-wrap" style="max-width:300px;margin:0.8rem auto 0;">
+      <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <button class="reset-btn" onclick="resetQuiz()">↺ אתחל מחדש</button>
+  </div>
+
+  <div class="quiz-container" id="quiz-container"></div>
+</div>
+
+</main>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// Navigation
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  const btns = document.querySelectorAll('.nav-btn');
+  btns.forEach(b => { if (b.getAttribute('onclick').includes(id)) b.classList.add('active'); });
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// Accordion
+function toggleTheory(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  body.classList.toggle('open');
+  chevron.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+// Scroll top
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('scrollTop');
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
+
+// Quiz Data
+const quizData = [
+  {
+    q: "בהסתמך על מדד הולמס-רהה (1967): היתרון הוא ש_____, והחיסרון הוא ש_____",
+    opts: [
+      "מאפשרת לנבא גורמי לחץ בהסתברות גבוהה; לא מתייחסת להבדלים בין אנשים",
+      "לא מתייחסת להבדלים בין אנשים; מאפשרת ניבוי",
+      "מתייחסת להבדלים בין אנשים; לא מאפשרת ניבוי",
+      "מאפשרת ניבוי בהסתברות נמוכה; מתייחסת להבדלים",
+      "כל התשובות נכונות",
+      "אף תשובה לא נכונה"
+    ],
+    answer: 0,
+    exp: "הולמס-רהה: היתרון = ניבוי גורמי לחץ בהסתברות גבוהה. החיסרון = לא מתייחס להבדלים אישיים/קבוצתיים/ארגוניים."
+  },
+  {
+    q: "רווית מחייכת ללקוחות לפי הוראות המנהלת, ואחרי שיחה עם אחיה העצבני מרגישה עצבנית. מה חווה רווית לפי הסדר?",
+    opts: [
+      "עבודת רגשות; רגש מווסת",
+      "רגש מווסת; רגש קיבוצי",
+      "עבודת רגשות; הדבקה רגשית",
+      "רגש קיבוצי; עבודת רגשות",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 2,
+    exp: "חיוך לפי הוראה = עבודת רגשות. קבלת עצבנות מהאח = הדבקה רגשית (Emotional Contagion)."
+  },
+  {
+    q: "מה המסקנה ממאמר גרינברג (1990) על גניבות עובדים כתגובה לקיצוץ שכר?",
+    opts: [
+      "צדק חלוקתי הוא החשוב ביותר",
+      "צדק פרוצדורלי יכול לפצות על חוסר צדק חלוקתי",
+      "צדק פרוצדורלי חייב לבוא יחד עם חלוקתי",
+      "צדק חלוקתי יכול לפצות על חוסר פרוצדורלי",
+      "כל התשובות נכונות",
+      "אף תשובה לא נכונה"
+    ],
+    answer: 1,
+    exp: "גרינברג מצא שכשהסבירו לעובדים את הקיצוץ בצורה מכבדת ושקופה, הגניבה ירדה. = צדק פרוצדורלי פיצה על חוסר חלוקתי."
+  },
+  {
+    q: "צחי עובד 8 בוקר עד 8 ערב, מוסר עבודה גבוה, משמעת, מחויבות. לאיזה דור הוא משתייך?",
+    opts: ["דור Z", "דור Y", "Baby Boomers", "אלפה", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 2,
+    exp: "BB מאופיינים בנאמנות לארגון, שעות ארוכות, מחויבות גבוהה, מוסר עבודה. שעות 8-8 = סימן ברור."
+  },
+  {
+    q: "רפאלי וסטון (1987) חקרו הבעת רגש במכירות. מה כדאי להמליץ למנהלים?",
+    opts: [
+      "תמיד לחייך — מעלה מכירות",
+      "לא להגביר נטל רגשי — אין מתאם",
+      "לחייך דווקא כשאין עומס לקוחות",
+      "לחייך כשהחנות עמוסה",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 2,
+    exp: "המחקר מצא: כשהחנות ריקה — חיוך עוזר. כשעמוסה — חיוך מאט ומעצבן לקוחות. → לחייך דווקא ללא עומס."
+  },
+  {
+    q: "יורם התעורר עם עליזות ושלווה שנמשכה מספר ימים. מדוע זו מצב רוח ולא רגש?",
+    opts: ["היא מתמשכת מטבעה", "היא תוצאה של אירוע בודד", "עוצמתה גבוהה", "היא חיובית", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 0,
+    exp: "רגש = קצר וספציפי. מצב רוח = מתמשך, לאורך שעות/ימים. 'מספר ימים' = מצב רוח. הסיבה היא המשך הזמן."
+  },
+  {
+    q: "יצחק המלצר חייך ללקוחות גם בלי מצב רוח. עבודתו מאופיינת ב:",
+    opts: ["עבודת רגשות", "משחק עמוק", "הדבקה רגשית", "דיסוננס קוגניטיבי", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 0,
+    exp: "עבודת רגשות = הבעת רגש לפי דרישות תפקיד גם כשלא מרגיש כך. זו הגדרה ישירה לעבודת רגשות."
+  },
+  {
+    q: "מה מהבאים הוא Distress?",
+    opts: ["סיום קורס בהצלחה", "מילוי טופס לוטו", "דרישות מהבוס ללא שליטה", "מציאת הרבה כסף", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 2,
+    exp: "Distress = לחץ שלילי. דרישות ללא שליטה = ביקוש גבוה + שליטה נמוכה = הגדרת Distress. האחרות הן Eustress."
+  },
+  {
+    q: "מה מהמקרים הוא Deep Acting (משחק עמוק)?",
+    opts: [
+      "גננת שמרגישה שמחה אמיתית כאילו ילדים הם שלה",
+      "מלצרית שמחייכת למרות שהיא עצובה",
+      "פקיד קבלה שממשיך לחייך ללקוחות כועסים",
+      "מאבטח שמחייך כדי לא להיפטר",
+      "כל התשובות נכוונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 0,
+    exp: "Deep Acting = שינוי ממשי ברגש הנחווה. רק הגננת שמרגישה אהבה אמיתית (שינוי פנימי). האחרים = Surface Acting (הבעה חיצונית בלבד)."
+  },
+  {
+    q: "שרה עובדת פחות קשה מעמיתיה אך מרוויחה אותו שכר. לפי Equity Theory, מה תעשה?",
+    opts: ["תתפטר", "תפגין שביעות רצון גבוהה", "תתחיל לעבוד יותר", "תתחיל להשקיע פחות", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 2,
+    exp: "לפי Equity Theory: שרה מרגישה שמשקיעה פחות ומקבלת כמו כולם = חוסר הוגנות (יתר). התגובה: תגדיל מאמץ כדי לאזן."
+  },
+  {
+    q: "עובדים מחקים גניבות של מנהלים. איזה מושג תיאורטי מסביר זאת?",
+    opts: ["התניה אופרנטית", "התניה קלאסית", "תיאוריית הוגנות", "למידה חברתית", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 3,
+    exp: "למידה חברתית (בנדורה) = למידה ע\"י צפייה ב\"מודל\". עובדים צופים במנהלים → מחקים. זה לא התניה."
+  },
+  {
+    q: "לפי Goal Setting Theory, מה כדאי לאמא לומר ללנה כדי לנקות חדר?",
+    opts: [
+      "שימי בגדים בארון, עכשיו!",
+      "יש לך שעה, אחותך כבר עשתה",
+      "אם לא תשימי, אכעס עלייך",
+      "שימי בגדים + קלסרים, חצי שעה, אחזור לבדוק",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 3,
+    exp: "SMART goal: ספציפי (בגדים+קלסרים), מדיד (שניהם), לו\"ז (חצי שעה), מעקב (אחזור לבדוק). תשובה ד' = כל המרכיבים!"
+  },
+  {
+    q: "יוסי ניקה כיתה כעונש על התפרעות. זוהי דוגמה ל...",
+    opts: ["ענישה חיובית", "חיזוק שלילי", "התניה קלאסית", "למידה חברתית", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 0,
+    exp: "עונש חיובי = הוספת גירוי לא נעים (ניקוי) כדי להפחית התנהגות לא רצויה. 'חיובי' = הוספה, לא שבח!"
+  },
+  {
+    q: "שרית שומעת שיר גלידה ומרגישה טעם גלידה בפה, שנים אחרי. זה קורה משום ש...",
+    opts: [
+      "התאוששות ספונטנית של גירוי מותנה",
+      "התאוששות ספונטנית של תגובה מותנית",
+      "חיזוק שלילי לתגובה מותנית",
+      "ענישה שלילית לגירוי בלתי מותנה",
+      "כל התשובות נכוונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 1,
+    exp: "ההתניה 'כחדה' (שרית גדלה, אין יותר אוטו גלידה), אך כששמעה שוב את השיר — התגובה חזרה. = התאוששות ספונטנית של התגובה המותנית."
+  },
+  {
+    q: "אליפלט מגדיר רגשות בדיוק, מזהה רגשות אחרים, ומבין הבעות. הוא ניחן ב:",
+    opts: ["Surface Acting", "Deep Acting", "נועם גבוה", "אינטליגנציה רגשית גבוהה", "כל התשובות נכוונות", "אף תשובה אינה נכונה"],
+    answer: 3,
+    exp: "EI = יכולת לזהות, להבין ולנהל רגשות של עצמי ואחרים. אליפלט מפגין בדיוק יכולות אלו."
+  },
+  {
+    q: "סיימון לא קם לאכול כשהבן מצלצל בפעמון בבית. מדוע?",
+    opts: ["הכחדה", "התאוששות ספונטנית", "הבחנה", "הכללה", "כל התשובות נכוונות", "אף תשובה אינה נכונה"],
+    answer: 2,
+    exp: "הבחנה = תגובה לגירוי ספציפי בלבד (פעמון בעבודה), ולא לגירויים דומים (פעמון הבן בבית). הוא למד להבחין."
+  },
+  {
+    q: "נירית מתנדבת בשיעורי כושר קרבי אחרי 'חרבות ברזל'. לפי 'גשר מאחד', זה התמודדות:",
+    opts: ["פיזית", "חברתית", "רגשית", "שכלית", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 0,
+    exp: "כושר קרבי = התמודדות פיזית (גוף). הגשר המאחד כולל: פיזי, חברתי, רגשי, שכלי. כאן — הדגש הוא על הכושר הגופני."
+  },
+  {
+    q: "מה נותן לנו Factor G לפי מחקר ה-DOL עם 32,000+ מקצועות?",
+    opts: [
+      "שיפור ביכולת ניבוי הצלחה במגוון מקצועות",
+      "הבנת היתרון היחסי של כל עובד",
+      "התאמת עובד למקצוע מבחינה אישיותית",
+      "הנחיה לגבי המבחן הטוב ביותר",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 0,
+    exp: "Factor G = יכולת קוגניטיבית כללית. מחקר ה-DOL הראה שהוא משפר ניבוי הצלחה במגוון רחב של מקצועות."
+  },
+  {
+    q: "דני מגייס לניהול בכיר בבית חולים. לפי אינטליגנציה נזילה ומגובשת, איזה גיל?",
+    opts: ["20-30", "30-40", "40-50", "כל הגילאים", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 2,
+    exp: "ניהול בכיר = ניסיון + שיקול דעת + ידע נצבר = אינטליגנציה מגובשת. מגובשת בשיאה = 40-50+."
+  },
+  {
+    q: "אביתר מבטיח ביקור של אגם בוחבוט אם כולם יקבלו מעל 90. מה חסר לפי Expectancy Theory?",
+    opts: [
+      "לבדוק אם תלמידים אוהבים את אגם",
+      "להוסיף מוטיבציה פנימית",
+      "לוודא שציון 90+ בר-ביצוע",
+      "לוודא שזה מאתגר מספיק",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 2,
+    exp: "Expectancy = ציפייה שהמאמץ יוביל לתוצאה. צריך לוודא שתלמידים מאמינים שאפשר להשיג 90+. בלי זה — אין מוטיבציה."
+  },
+  {
+    q: "אורית אומרת 'מתרגשת מהאתגר' ושואלת ותיקים לעצות. מה נכון לגבי הלחץ שלה?",
+    opts: [
+      "לפי Demand-Control — היא ב-Distress",
+      "סיכון גבוה לבעיה רפואית",
+      "הערכה ראשונית גבוהה + שניונית גבוהה",
+      "פועלת במצב Flight",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 2,
+    exp: "לפי לאזארוס: 'מתרגשת מהאתגר' = הערכה ראשונית = אתגר (לא איום). שואלת ותיקים = יש משאבים = הערכה שניונית גבוהה. לא Distress!"
+  },
+  {
+    q: "דני הרופא: משמרות אינטנסיביות + אוטונומיה גבוהה. לפי Demand-Control, מצבו הוא:",
+    opts: [
+      "High Strain — שחיקה ודאית",
+      "Passive — שעמום",
+      "Active/Eustress — למידה וצמיחה",
+      "Low Strain — רגוע לחלוטין",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 2,
+    exp: "Demand גבוה + Control גבוה = Active/Eustress. לא Distress! הביקוש גבוה אך השליטה מנטרלת את הלחץ השלילי."
+  },
+  {
+    q: "לירון עוברת ליד קולנוע סגור ומרגישה ריח/טעם פופקורן. התחושה היא:",
+    opts: ["תגובה בלתי מותנית", "גירוי מותנה", "גירוי בלתי מותנה", "תגובה מותנית", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 3,
+    exp: "ריח/טעם שנלמד ע\"י קשר לקולנוע = תגובה מותנית (CR). הקולנוע הוא הגירוי המותנה (CS). הריח עצמו מהפופקורן = UR."
+  },
+  {
+    q: "שירה יישמה כלים שלמדה במצבים חדשים שלא לימדו עליהם. יכולת זו נקראת:",
+    opts: ["הכללה", "הבחנה", "למידה חברתית", "התניה אופרנטית", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 0,
+    exp: "הכללה = יישום תגובה/ידע שנלמד לסיטואציות חדשות ודומות. שירה יישמה ידע כללי במצבים ספציפיים שלא לימדו."
+  },
+  {
+    q: "שקד צעק על מאבטח; המאבטח מנע ממנו כניסה. תגובת המאבטח היא:",
+    opts: ["ענישה חיובית", "חיזוק שלילי", "ענישה שלילית", "תגובה בלתי מותנית", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 2,
+    exp: "ענישה שלילית = הסרת גירוי טוב (גישה לטיפול) כדי להפחית התנהגות לא רצויה (צעקות). לא הוסיפו כלום — רק הסירו."
+  },
+  {
+    q: "רון: מי שמגיע אחרון קונה פיצה. מה כלי הניהול שבו הוא משתמש?",
+    opts: [
+      "חיזוק חיובי למגיעים בזמן",
+      "ענישה שלילית למאחרים",
+      "חיזוק שלילי למגיעים בזמן",
+      "חיזוק וענישה לכולם",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 1,
+    exp: "למאחר: נוסף עונש (קניית פיצה) = עונש חיובי. אבל שאלת המאחרים = ענישה. עבור מגיעים בזמן: לא קורה כלום. → ענישה (חיובית) למאחרים."
+  },
+  {
+    q: "לפי שור-רודנסקי-וערב, מה כדאי לעשות להגדלת שמירת כללי תנועה?",
+    opts: [
+      "ענישה חמורה + תדירה",
+      "ענישה חמורה + נדירה",
+      "עונש חיובי + חיזוק שלילי",
+      "ענישה קלה + תדירה",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 3,
+    exp: "המחקר: עונש קל אך עקבי ותדיר = ניתן לאכיפה ואפקטיבי. עונש חמור = לא ניתן לאכיפה = לא יעיל."
+  },
+  {
+    q: "מה הסיבה להצלחת מובילאיי לפי מחקר שור-רודנסקי-וערב?",
+    opts: [
+      "התניה מותנית להתנהגות נכונה",
+      "המערכת מצפצפת ברוב המוחלט של המקרים",
+      "חיזוק חיובי על נהיגה נכונה",
+      "מלמדת את הנהג לנהוג נכון",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 1,
+    exp: "העיקרון: עונש קל (צפצוף) + עקביות גבוהה (כמעט תמיד מצפצפת). = ענישה קלה + תדירה = האכיפה הידידותית!"
+  },
+  {
+    q: "מה היתרון המרכזי של דור Z?",
+    opts: ["מחפש משמעות", "פורץ גבולות", "ממושמע", "מאזן בית ועבודה", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 5,
+    exp: "דור Z: יכולת למידה מהירה, אנרגטיים, מחוברים לרשתות. הסיכום אינו מציין אחת מהתשובות המוצעות כ'יתרון מרכזי'. לפי הסיכום: למידה מהירה היא המאפיין — אף תשובה לא נכונה."
+  },
+  {
+    q: "רונית מקימה צוות הייטק. איזה תמהיל אישיות תמליצו?",
+    opts: [
+      "כולם נועם גבוה + מגוון מצפוניות",
+      "כולם מצפוניות גבוהה + מגוון נועם ומוחצנות",
+      "נועם + מצפוניות + מוחצנות גבוהים",
+      "IQ גבוה ככל האפשר",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 1,
+    exp: "מצפוניות = ביצוע, אחריות, עמידה ביעדים — קריטי לכולם בהייטק. נועם ומוחצנות יכולים להשתנות לפי תפקיד. אין צורך שכולם יהיו אותו הדבר."
+  },
+  {
+    q: "מירי אוהבת שעות קבועות, קידום, קביעות, מאזנת בית-עבודה. שיר: 'Working 9 to 5'. איזה דור?",
+    opts: ["X", "אלפא", "Z", "Baby Boomers", "לא ניתן לדעת", "אף תשובה אינה נכונה"],
+    answer: 0,
+    exp: "דור X: קביעות, איזון בית-עבודה, שכר > סיפוק, ציניים ופרקטיים. BB עובדים שעות ארוכות. מירי = X."
+  },
+  {
+    q: "דנה: 'תעופו עם הדמיון, לנצח בגדול, לקחת סיכונים'. איזה גורם מוטיבציה?",
+    opts: ["מיקוד מניעה", "צורך בהשתייכות", "מיקוד קידום", "מטרת SMART", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 2,
+    exp: "מיקוד קידום = שאיפות, הישגים, לנצח, להשיג יותר. מיקוד מניעה = זהירות, למנוע טעויות. דנה בבירור = קידום."
+  },
+  {
+    q: "רונן מציע וויסקי על עסקה. לפי Expectancy Theory, מה צפוי?",
+    opts: [
+      "לא יתאמצו — אין שינוי ב-instrumentality",
+      "יתאמצו — עלייה ב-expectancy",
+      "חלק יתאמצו, חלק לא — ערך (value) שונה",
+      "חלק יתאמצו, חלק לא — instrumentality שונה",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 2,
+    exp: "מרכיב הערך (valence) = כמה שווה לי התגמול. וויסקי שווה לאוהבים אלכוהול, לא שווה לאחרים. = חלק מתאמצים, חלק לא."
+  },
+  {
+    q: "אביתר/נועה קירל: מה חסר לפי Expectancy Theory?",
+    opts: [
+      "לשכנע שביקור יהווה תגמול",
+      "לקשר בין תגמול לערך",
+      "לוודא שתלמידים מסוגלים להשיג 90+",
+      "לוודא שציון 90 מאתגר מספיק",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 2,
+    exp: "Expectancy = האם המאמץ יוביל לתוצאה? צריך לוודא שתלמידים מסוגלים (אם יתאמצו) להשיג 90+. ביקור = ברור. ערך = ברור. Expectancy = לא."
+  },
+  {
+    q: "לפי מודל נזילה/מגובשת, דני מגייס לסטארט-אפ. איזה גיל עדיף?",
+    opts: ["20-30", "40-50", "50-60", "כל הגילאים", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 0,
+    exp: "סטארט-אפ = חדשנות, מהירות, פתרון יצירתי = אינטליגנציה נזילה. נזילה בשיאה = 20-30."
+  },
+  {
+    q: "לפי השיעור, איזו אסכולה למיון עובדים הכי מקובלת היום?",
+    opts: ["Talent focus", "מבחני אישיות", "מבחני GMA/אינטליגנציה", "Person-job fit", "כל התשובות נכונות", "אף תשובה אינה נכונה"],
+    answer: 3,
+    exp: "הגישה הנפוצה היום: person-job fit = התאמה בין אישיות העובד לדרישות התפקיד, לא רק IQ או אישיות לבדם."
+  },
+  {
+    q: "מסקנת מאמר לוונשטיין וקריידר: תשלום לאזרחים להתחסן.",
+    opts: [
+      "מיינדסט חיובי: ייצור reframing → יגדיל התחסנות",
+      "התשלום ישנה מוטיבציה פנימית לחיצונית",
+      "ייצור חוסר צדק חלוקתי בקרב מחוסנים",
+      "יועיל רק אם הסכום גבוה",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 1,
+    exp: "המסקנה: תשלום עלול להמיר מוטיבציה פנימית לחיצונית. 'אם משלמים לי — כנראה זה מסוכן.' = ירידה בנכונות!"
+  },
+  {
+    q: "יואב מרגיש שמאמצים אינם מוכרים, וגלית (פחות מחויבת) מרוויחה כמוהו. מה לא יעשה לפי Equity?",
+    opts: [
+      "ידרוש העלאת שכר",
+      "ישקיע מאמץ רב עוד יותר",
+      "יסרב לעזור לגלית",
+      "יפחית השקעה",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 1,
+    exp: "יואב כבר משקיע יותר ומקבל פחות (חוסר הוגנות). לפי Equity, ישנה תפיסה, ידרוש עלייה, יפחית מאמץ, יסרב לעזור — אך לא יגדיל מאמץ (כי זה מחמיר את האי-שוויון)."
+  },
+  {
+    q: "לילך מתפרצת בשיעור ומדברת בלי לחשוב על אחרים. ניתן לאבחן אותה כבעלת...",
+    opts: [
+      "אינטליגנציה רגשית נמוכה",
+      "אינטליגנציה רגשית גבוהה",
+      "נועם נמוך",
+      "מוחצנות גבוהה",
+      "כל התשובות נכונות",
+      "אף תשובה אינה נכונה"
+    ],
+    answer: 5,
+    exp: "לילך מפגינה גם אינטליגנציה רגשית נמוכה (לא מנהלת רגשות) וגם נועם נמוך (לא מתחשבת) וגם מוחצנות גבוהה. אז כמה תשובות נכונות! = 'כל התשובות נכונות' — אבל... לפי הפורמט עם 6 מסיחים, כל התשובות נכונות = ה'."
+  }
+];
+
+// Quiz state
+let answered = new Array(quizData.length).fill(false);
+let correct = 0;
+let total = 0;
+
+function buildQuiz() {
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = '';
+  quizData.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+    card.id = 'qcard-' + idx;
+    card.innerHTML = `
+      <div class="quiz-q"><span class="quiz-num">${idx+1}</span> ${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((opt, oi) => `
+          <button class="quiz-opt" onclick="selectAnswer(${idx}, ${oi})" id="opt-${idx}-${oi}">${['א','ב','ג','ד','ה','ו'][oi]}. ${opt}</button>
+        `).join('')}
+      </div>
+      <div class="quiz-explanation" id="exp-${idx}">💡 ${q.exp}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function selectAnswer(qIdx, optIdx) {
+  if (answered[qIdx]) return;
+  answered[qIdx] = true;
+  total++;
+  const isCorrect = optIdx === quizData[qIdx].answer;
+  if (isCorrect) correct++;
+  
+  for (let i = 0; i < quizData[qIdx].opts.length; i++) {
+    const btn = document.getElementById(`opt-${qIdx}-${i}`);
+    btn.disabled = true;
+    if (i === quizData[qIdx].answer) btn.classList.add('reveal-correct');
+  }
+  const selectedBtn = document.getElementById(`opt-${qIdx}-${optIdx}`);
+  selectedBtn.classList.remove('reveal-correct');
+  selectedBtn.classList.add(isCorrect ? 'selected-correct' : 'selected-wrong');
+  
+  document.getElementById(`exp-${qIdx}`).classList.add('show');
+  document.getElementById(`qcard-${qIdx}`).classList.add(isCorrect ? 'correct' : 'wrong');
+  
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById('score-display').textContent = `${correct}/${total}`;
+  const pct = total > 0 ? (correct / total) * 100 : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+function resetQuiz() {
+  answered = new Array(quizData.length).fill(false);
+  correct = 0;
+  total = 0;
+  updateScore();
+  buildQuiz();
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
